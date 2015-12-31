@@ -41,63 +41,11 @@ namespace MyInput
             Close();
         }
 
-        List<String> sequence = new List<string>();
-        List<String> modifiers = new List<string>();
-        String getfor = "";
         private void glassButton1_KeyDown(object sender, KeyEventArgs e)
         {
-
-            if (e.KeyCode == Keys.ShiftKey
-        || e.KeyCode == Keys.ControlKey
-        || e.KeyCode == Keys.Menu)
-            {
-                modifiers.Add(e.KeyCode.ToString());
-            }
-            else
-            {
-                String res = "";
-                foreach(String s in modifiers)
-                    res += s + "+";
-                res += e.KeyCode.ToString();
-
-                modifiers.Clear();
-                if (sequence.Count >= 2) return;
-                sequence.Add(res);
-
-                ((Glass.GlassButton)sender).Text = "";
-                foreach (String s in sequence)
-                {
-                    ((Glass.GlassButton)sender).Text += "(" + s + ")" + " ";
-                }
-                cfg.Write("enable", ((Glass.GlassButton)sender).Text);
-            }
-        }
-
-        private void glassButton1_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.ShiftKey
-        || e.KeyCode == Keys.ControlKey
-        || e.KeyCode == Keys.Menu)
-            {
-                if (modifiers.Count > 0)
-                {
-                    String res = "";
-                    foreach (String s in modifiers)
-                        res += s + "+";
-
-                    res = res.Remove(res.Length - 1);
-                    modifiers.Clear();
-                    if (sequence.Count >= 2) return;
-                    sequence.Add(res);
-
-                    ((Glass.GlassButton)sender).Text = "";
-                    foreach (String s in sequence)
-                    {
-                        ((Glass.GlassButton)sender).Text += "(" + s + ")" + " ";
-                    }
-                    cfg.Write("enable", ((Glass.GlassButton)sender).Text);
-                }
-            }
+            glassButton1.Text = e.KeyCode.ToString();
+            cfg.Write("enable", e.KeyValue.ToString());
+            mfm.enablekey = e.KeyValue;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -111,21 +59,24 @@ namespace MyInput
             checkBox1.Checked = Convert.ToBoolean(cfg.Read("toggleenable", "true"));
             checkBox4.Checked = Convert.ToBoolean(cfg.Read("enableenable", "true"));
             screnable.Checked = Convert.ToBoolean(cfg.Read("screnable", "true"));
-            int x = Convert.ToInt32(cfg.Read("toggle","119"));
+            int x = Convert.ToInt32(cfg.Read("toggle", "119"));
             glassButton2.Text = ((Keys)x).ToString();
             x = Convert.ToInt32(cfg.Read("enable", "120"));
             glassButton1.Text = ((Keys)x).ToString();
             x = Convert.ToInt32(cfg.Read("scriptshortcut", "122"));
             glassButton3.Text = ((Keys)x).ToString();
             x = Convert.ToInt32(cfg.Read("osk", "121"));
-           
-           
+            glassButton4.Text = ((Keys)x).ToString();
+            checkBox2.Checked = Convert.ToBoolean(cfg.Read("autoshow", "true"));
             checkBox3.Checked = Convert.ToBoolean(cfg.Read("debug", "false"));
+            oskenable.Checked = Convert.ToBoolean(cfg.Read("oskenable", "true"));
+            checkBox5.Checked = Convert.ToBoolean(cfg.Read("virtualize", "true"));
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-           
+            cfg.Write("autoshow", checkBox2.Checked.ToString());
+            mfm.autohide = checkBox2.Checked;
         }
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
@@ -169,6 +120,25 @@ namespace MyInput
             mfm.scrkey = e.KeyValue;
         }
 
+        private void checkBox5_CheckedChanged_1(object sender, EventArgs e)
+        {
+            cfg.Write("oskenable", oskenable.Checked.ToString());
+            mfm.oskenable = oskenable.Checked;
+        }
+
+        private void glassButton4_KeyDown(object sender, KeyEventArgs e)
+        {
+            glassButton4.Text = e.KeyCode.ToString();
+            cfg.Write("osk", e.KeyValue.ToString());
+            mfm.osk = e.KeyValue;
+        }
+
+        private void checkBox5_CheckedChanged_2(object sender, EventArgs e)
+        {
+            cfg.Write("virtualize", checkBox5.Checked.ToString());
+            mfm.virtualize = checkBox5.Checked;
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             LinearGradientBrush lgb = new LinearGradientBrush(new Rectangle(0, 0, Width, Height), BackColor, ForeColor, LinearGradientMode.Vertical);
@@ -184,30 +154,5 @@ namespace MyInput
         {
             Close();
         }
-
-        private void glassButton1_Click(object sender, EventArgs e)
-        {
-            getfor = "enable";
-            sequence.Clear();
-            modifiers.Clear();
-            timer1.Enabled = true;
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-
-            if (getfor == "enable")
-            {
-                glassButton1.Text = "";
-                foreach (String s in sequence)
-                {
-                    glassButton1.Text += "(" + s + ")" + " ";
-                }
-                //glassButton1.Text = sequence.t;
-                timer1.Enabled = false;
-            }
-        }
-
-
     }
 }

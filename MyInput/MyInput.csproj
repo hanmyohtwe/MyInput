@@ -112,6 +112,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\FontInstaller.cs" />
     <Compile Include="Utilities\EmbeddingControl.cs" />
     <Compile Include="IMEForm.cs">
       <SubType>Form</SubType>
@@ -131,6 +132,7 @@
     <Compile Include="LoadingCircle\LoadingCircleToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Utilities\Global Hooks.cs" />
     <Compile Include="Utilities\KeySender.cs" />
     <Compile Include="Utilities\Log.cs" />
     <Compile Include="Utilities\Config.cs" />
@@ -152,7 +154,6 @@
     <Compile Include="Utilities\Buffer.cs" />
     <Compile Include="Keyboard Classes\KeyboardLayout.cs" />
     <Compile Include="Keyboard Classes\KeyProcessor.cs" />
-    <Compile Include="Utilities\Global Hooks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Config.resx">

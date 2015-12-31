@@ -24,7 +24,7 @@ namespace MyInput
         public Main()
         {
             InitializeComponent();
-            
+
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -42,8 +42,6 @@ namespace MyInput
         public static extern bool ReleaseCapture();
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int WM_NCLBUTTONUP = 0xa2;
-
-        private List<GlobalHook.KeyStroke> enable = new List<GlobalHook.KeyStroke>();
         private void Form1_Load(object sender, EventArgs e)
         {
             //MessageBox.Show("This version of MyInput Beta is for use by \r\nMyanmar Posts and Telecommunications\r\nfor demonstration purpose at ICT Week.\r\nAll other rights reserved.\r\nCopyright 2000-2010\r\nTechnomation Studios.");
@@ -138,8 +136,8 @@ namespace MyInput
                 layouts.Items.Add(i);
             }
 
-            
-            string lay =  cfg.Read("layout", "Type Writer");
+
+            string lay = cfg.Read("layout", "Type Writer");
             string scr = cfg.Read("script", "MM Unicode");
             if (LayoutExists(lay))
             {
@@ -183,41 +181,14 @@ namespace MyInput
             }
             else
             {
-                string enablekey = (cfg.Read("enable", "(ShiftKey) (ShiftKey)"));
-
-                string[] keys =  enablekey.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (string k in keys)
-                {
-                    
-
-                    String fk = k.Replace("(","");
-                    fk = fk.Replace(")","");
-                    string[] strokes = fk.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    GlobalHook.KeyStroke k1 = new GlobalHook.KeyStroke();
-                    foreach (string stroke in strokes)
-                    {
-                        if (stroke == "ShiftKey")
-                            k1.shift = true;
-                        else if (stroke == "ControlKey")
-                            k1.control = true;
-                        else if (stroke == "Menu")
-                            k1.alt = true;
-                        else
-                            k1.key = (int)(stroke[0]);
-                    }
-
-                    enable.Add(k1);
-                }
-
+                enablekey = Convert.ToInt32(cfg.Read("enable", "120"));
             }
             this.Refresh();
             Program.kh.SetHandle(this);
             Program.kh.Initiate();
         }
         bool internetactive = false;
-        
+
         private bool ScriptExists(string s)
         {
             foreach (string x in Scripts)
@@ -339,8 +310,8 @@ namespace MyInput
         {
             MethodInvoker mx = delegate
             {
-                if(!embedcrypt.Enabled)
-                scrbtn.Enabled = true;
+                if (!embedcrypt.Enabled)
+                    scrbtn.Enabled = true;
                 UpdateLayout(laybtn.Text);
             };
             scrbtn.BeginInvoke(mx, null);
@@ -440,7 +411,7 @@ namespace MyInput
                         laybtn.Text = kime.getname();
                         if (l.name == "MyRoman")
                         {
-                           // toolStripMenuItem2.Text = "MyRoman Browser";
+                            // toolStripMenuItem2.Text = "MyRoman Browser";
                         }
                         else
                         {
@@ -534,9 +505,9 @@ namespace MyInput
                     servicetimer.Enabled = false;
                     return;
                 }
-               // this.TopLevel = true;
+                // this.TopLevel = true;
                 //this.TopMost = true;
-               // this.BringToFront();
+                // this.BringToFront();
                 int inv = 10;
                 int apos = Screen.GetWorkingArea(this).Width - fwidth + 1;
                 if (popenter && !active)
@@ -617,12 +588,13 @@ namespace MyInput
                     hw = null;
                 }
                 //iop = null;
-/*                if (imp != null)
-                {
-                    imp.Kill();
-                    imp = null;
-                }
-*/               actv.BackColor = Color.Black;
+                /*                if (imp != null)
+                                {
+                                    imp.Kill();
+                                    imp = null;
+                                }
+                */
+                actv.BackColor = Color.Black;
                 System.GC.Collect();
             }
             cfg.Write("active", active.ToString());
@@ -758,7 +730,7 @@ namespace MyInput
             else
             {
                 bf.Flush();
-            }        
+            }
             log.write("MFM: SYSKEY");
         }
 
@@ -766,7 +738,7 @@ namespace MyInput
         {
             Activate();
             Glass.GlassButton gl = (Glass.GlassButton)sender;
-            mainmenu.Show(gl, new Point(0,0), ToolStripDropDownDirection.Left);
+            mainmenu.Show(gl, new Point(0, 0), ToolStripDropDownDirection.Left);
         }
 
         private void exitMyInputToolStripMenuItem_Click(object sender, EventArgs e)
@@ -799,7 +771,7 @@ namespace MyInput
 
         private void Main_Activated(object sender, EventArgs e)
         {
-            
+
         }
 
         private void cmdset_Tick(object sender, EventArgs e)
@@ -848,16 +820,16 @@ namespace MyInput
         private int fwidth;
         private void scrbtn_TextChanged(object sender, EventArgs e)
         {
-             /*
-            Graphics gr = scrbtn.CreateGraphics();
-            SizeF sz = gr.MeasureString(scrbtn.Text, scrbtn.Font);
-            scrbtn.Width = (int)sz.Width + 15;
-            laybtn.Left = scrbtn.Left + scrbtn.Width + 1;
-            glassButton4.Left = laybtn.Left + laybtn.Width + 1;
-            label1.Left = glassButton4.Left + glassButton4.Width + 1;
+            /*
+           Graphics gr = scrbtn.CreateGraphics();
+           SizeF sz = gr.MeasureString(scrbtn.Text, scrbtn.Font);
+           scrbtn.Width = (int)sz.Width + 15;
+           laybtn.Left = scrbtn.Left + scrbtn.Width + 1;
+           glassButton4.Left = laybtn.Left + laybtn.Width + 1;
+           label1.Left = glassButton4.Left + glassButton4.Width + 1;
 
             
-            // */
+           // */
             this.Width = label1.Left + label1.Width + 3;
             fwidth = this.Width;
             servicetimer.Enabled = true;
@@ -905,9 +877,9 @@ namespace MyInput
             }
             else
             {
-                    hw.Close();
-                    hw.Dispose();
-                    hw = null;
+                hw.Close();
+                hw.Dispose();
+                hw = null;
             }
         }
 
@@ -925,7 +897,7 @@ namespace MyInput
         {
             //LinearGradientBrush lgb = new LinearGradientBrush(new Rectangle(0, 0, e.ClipRectangle.Width, e.ClipRectangle.Height), Color.Black, Color.Cyan, LinearGradientMode.Vertical);
             //e.Graphics.FillRectangle(lgb, new Rectangle(0, 0, e.ClipRectangle.Width, e.ClipRectangle.Height));
-        
+
         }
 
         private void mainmenu_PaintGrip(object sender, PaintEventArgs e)
@@ -951,7 +923,7 @@ namespace MyInput
 
         private void Main_MouseEnter(object sender, EventArgs e)
         {
-            
+
         }
 
         private void actv_MouseEnter(object sender, EventArgs e)
@@ -1042,24 +1014,6 @@ namespace MyInput
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(@"Docs\\HELP.pdf");
-        }
-
-        internal bool CheckForShortCut(GlobalHook.KeyStroke k1, GlobalHook.KeyStroke k2)
-        {
-            if (enable.Count == 1)
-            {
-                if (enable[0].Equals(k2))
-                {
-                    enablePressed();
-                    return true;
-                }
-            }
-            else if (enable[0].Equals( k1) && enable[1].Equals(k2))
-            {
-                enablePressed();
-                return true;
-            }
-            return false;
         }
     }
 

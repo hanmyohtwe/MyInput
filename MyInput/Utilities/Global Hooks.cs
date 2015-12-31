@@ -36,12 +36,10 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.Data;
 using System.Runtime.InteropServices;
 using System.Text;
 using MyInput;
 using System.Threading;
-using System.Collections.Generic;
 
 /// <summary>
 /// Low-level keyboard intercept class to trap and suppress system keys.
@@ -231,37 +229,13 @@ public class GlobalHook : IDisposable
         }
         return NativeMethods.CallNextHookEx(MhookID, nCode, wParam, lParam);
     }
-
-    public class KeyStroke
-    {
-        public bool control;
-        public bool alt;
-        public bool shift;
-        public int key;
-
-        public bool Equals(KeyStroke k)
-        {
-            if (k.control != control) return false;
-            if (k.shift != shift) return false;
-            if (k.alt != alt) return false;
-            if (k.key != key) return false;
-            return true;
-        }
-    }
-
+    
     private bool win;
     private bool altpressed;
     private bool alt;
     private bool ctrl;
     private bool shift;
-
-    public KeyStroke k1 = null;
-    DateTime k1time = new DateTime(0);
-    public KeyStroke k2 = null;
-
-    bool _alt = false;
-    bool _ctrl = false;
-    bool _shift = false;
+     
     private IntPtr HookCallback(
         int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam)
     {
@@ -270,61 +244,13 @@ public class GlobalHook : IDisposable
         if (nCode >= 0)
         {
             bool eat = false;
-
-            shift = false;
-            alt = false;
-            ctrl = false;
-            win = false;
-            CheckModifiers();
-
-
             if (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
             {
-
-
-                if (lParam.vkCode == 0xA0 || lParam.vkCode == 0xA1)
-                    _shift = true;
-                else if (lParam.vkCode == 164 || lParam.vkCode == 165)
-                    _alt = true;
-                else if (lParam.vkCode == 0xA2 || lParam.vkCode == 0xA3)
-                    _ctrl = true;
-                else {
-
-                    bool toofar = false;
-
-                    if (k1time.Ticks == 0)
-                    {
-                        toofar = true;
-                    }
-                    else
-                    {
-                        if ((DateTime.Now - k1time).TotalMilliseconds > 800)
-                        {
-                            toofar = true;
-                        }
-                    }
-
-                    k1time = DateTime.Now;
-                    if (k2 != null)
-                        k1 = k2;
-                    else
-                        k2 = new KeyStroke();
-                    k2.shift = shift;
-                    k2.alt = alt;
-                    k2.control = ctrl;
-                    k2.key = lParam.vkCode;
-                    _shift = false;
-                    _alt = false;
-                    _ctrl = false;
-
-                    if (toofar)
-                    {
-                       eat = mfm.CheckForShortCut(new KeyStroke(), k2);
-                    }else
-                       eat = mfm.CheckForShortCut(k1,k2);
-                }
-
-                
+                shift = false;
+                alt = false;
+                ctrl = false;
+                win = false;
+                CheckModifiers();
                 if (lParam.flags == 16 && lParam.vkCode == 8)
                 {
                 }
@@ -344,10 +270,10 @@ public class GlobalHook : IDisposable
                         mfm.log.write("KEYIS: " + lParam.vkCode.ToString());
                         mfm.SystemKeyEvent();
                     }
-                   /* else if (lParam.vkCode == 0xA0 || lParam.vkCode == 0xA1)
+                    else if (lParam.vkCode == 0xA0 || lParam.vkCode == 0xA1)
                     {
                         // do nothing
-                    }*/
+                    }
                     else if (win || ctrl || (alt && lParam.vkCode != 165))
                     {
                         mfm.log.write("KEYIS: " + lParam.vkCode.ToString());
@@ -388,52 +314,6 @@ public class GlobalHook : IDisposable
             }
             else if (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP)
             {
-                if (true)
-                {
-                    if (lParam.vkCode == 0xA0 || lParam.vkCode == 0xA1 || lParam.vkCode == 0xA2 || lParam.vkCode == 0xA3 || lParam.vkCode == 164 || lParam.vkCode == 165)
-                    {
-                        if (_shift || _ctrl || _alt)
-                        {
-                            bool toofar = false;
-                            
-                            if (k1time.Ticks == 0)
-                            {
-                                toofar = true;
-                            }
-                            else
-                            {
-                                TimeSpan ts = DateTime.Now - k1time;
-                                int i = ts.Milliseconds;
-                                if ((DateTime.Now - k1time).TotalMilliseconds > 800)
-                                {
-                                    toofar = true;
-                                }
-                            }
-
-                            k1time = DateTime.Now;
-                            if (k2 != null)
-                                k1 = k2;
-                            else
-                                k2 = new KeyStroke();
-                            k2.shift = _shift;
-                            k2.alt = _alt;
-                            k2.control = _ctrl;
-                            k2.key = 0;
-                            _shift = false;
-                            _alt = false;
-                            _ctrl = false;
-                            if (toofar)
-                            {
-                                eat = mfm.CheckForShortCut(new KeyStroke(), k2);
-                            }
-                            else
-                            {
-                                eat = mfm.CheckForShortCut(k1, k2);
-                            }
-                        }
-                    }
-                }
-
                 if (lParam.vkCode == 0xA0 || lParam.vkCode == 0xA1)
                 {
                     mfm.ChangeState(false, altpressed);
@@ -443,7 +323,7 @@ public class GlobalHook : IDisposable
                 mfm.log.write("KHUP: " + lParam.vkCode.ToString() + " Blocked: " + eat.ToString());
             }
             if (eat)
-                return (System.IntPtr)0;
+                return (System.IntPtr)1;
         }
         return NativeMethods.CallNextHookEx(hookID, nCode, wParam, ref lParam);
     }

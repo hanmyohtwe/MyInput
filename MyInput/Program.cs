@@ -9,6 +9,7 @@ using System.IO;
 using Microsoft.Win32;
 using onlyconnect;
 using System.Diagnostics;
+using MyInput.Utilities;
 
 
 
@@ -85,6 +86,8 @@ namespace MyInput
         [STAThread]
         static void Main()
         {
+            FontInstaller.AddFontResourceA(Directory.GetCurrentDirectory() + "\\MyMMUniversal.ttf");
+
             RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers");
             if (IsAlreadyRunning())
             {
