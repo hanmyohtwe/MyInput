@@ -1,0 +1,1 @@
+MyInput is the first Input Method Editor to write Myanmar Scripts in Unicode Standard, in a natural way. It was an effort by Technomation Co.,'s MyMyanmar Projects to help develop native language in 2004+ years. Its features include character rearranging, character sequence checking, virtualization, keyboard layouts, romanization, handwriting, on screen keyboard,etc. 
