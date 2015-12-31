@@ -1,0 +1,44 @@
+﻿#encoding	XPartial
+
+##MyKeyLanguage Prototype
+
+begin	context
+declare {
+	array	[က,ခ,ဂ,ဃ,င,စ,ဆ,ဇ,ဈ,ဉ,ည,ဋ,ဌ,ဍ,ဎ,ဏ,တ,ထ,ဒ,ဓ,န,ပ,ဖ,ဗ,ဘ,မ,ယ,ရ,လ,ဝ,သ,ဟ,ဠ,အ,ဣ,ဤ,ဥ,ဦ,ဧ,ာ,ိ,ီ,ု,ူ,ေ,ဲ,ံ,့,း,္,၀,၁,၂,၃,၄,၅,၆,၇,၈,၉,၊,။,၌,၍,၏] > keys
+
+	array	[က,ခ,ဂ,ဃ,င,စ,ဆ,ဇ,ဈ,ဉ,ည,ဋ,ဌ,ဍ,ဎ,ဏ,တ,ထ,ဒ,ဓ,န,ၙ,ပ,ဖ,ဗ,ဘ,မ,ယ,ရ,လ,ဝ,သ,ဟ,ဠ,အ,ဣ,ဤ,ဥ,ဦ,ဧ,ဩ,ဪ,၌,၍,၎,၏]	> 	c_consonants
+	array	[ႀ,ႁ,ႂ,ႃ,ႍ,ႎ,႐,U+1091,႒,U+1093,ါ,ာ,ိ,ီ,ု,ူ,ဲ, ဳ,ဴ,U+1035,ံ,့,း,ႏ,၊,။,U+1094,U+1095,U+1039,U+103a]	>	c_attach
+	array	[ေ,ႅ,ႄ,U+1086,U+1087,U+1088,U+1089,U+108a,U+108b]	>	c_fattach
+	array	[U+1039,U+103A]	>	c_killer
+	array	[ၠ,ၡ,ၢ,ၣ,ၨ,ၩ,ၪ,ၫ,U+106e,U+106f,U+1070,U+1071,U+1072,U+1073,ၴ,ၵ,ၷ,ၸ,ၹ,ၺ,ၻ,ၼ,ၽ,ၾ,ၿ,ႌ]	>	c_staking
+	array	[ၤ,ၥ,ၦ,ၧ]	>	c_kinzi
+	array [U+1000,U+1003,U+1006,U+1010,U+1011,U+1018,U+101C,U+101E,U+100A,U+101A] > biggers
+}
+
+##	input
+U+200b c_consonants U+200b + c_killer > c_consonants@1 c_killer@i U+200b 
++ c_consonants > c_consonants@i U+200b
+U+200b + c_attach > c_attach@i U+200b
++ c_fattach > c_fattach@i
+c_kinzi U+200b c_consonants U+200b + c_killer > c_kinzi@1 U+200d c_consonants@2 c_killer@i U+200b 
+U+200b 'ေႅ' c_consonants U+200b  + c_staking > U+200d 'ေႅ' c_consonants@1 c_staking@i U+200b
+U+200b 'ေ' c_consonants U+200b  + c_staking > U+200d 'ေ' c_consonants@1 c_staking@i U+200b
+U+200b c_consonants U+200b + c_staking > c_consonants@1 c_staking@i U+200b      
+U+200b c_fattach c_consonants U+200b + c_kinzi > U+200d c_fattach@1 c_consonants@2 c_kinzi@i U+200b 
+U+200b 'ေ' c_consonants U+200b + c_kinzi > U+200d 'ေ' c_consonants@1 c_kinzi@i U+200b 
+U+200b c_consonants U+200b + c_kinzi > c_consonants@1 c_kinzi@i U+200b 
+
+##	delete
+c_consonants U+200b + del > null
+c_attach U+200b + del > U+200b  
+##
+c_kinzi U+200d c_consonants c_killer U+200b + del > c_kinzi@1 U+200b c_consonants@2 U+200b
+c_consonants c_killer U+200b + del > U+200b c_consonants@1 U+200b 
+U+200d 'ေႅ' c_consonants c_staking U+200b + del > U+200b 'ေႅ' c_consonants@1 U+200b
+U+200d 'ေ' c_consonants c_staking U+200b + del > U+200b 'ေ' c_consonants@1 U+200b
+c_consonants c_staking U+200b + del > U+200b c_consonants@1 U+200b 
+U+200d c_fattach c_consonants c_kinzi U+200b + del > U+200b c_fattach@1 c_consonants@2 U+200b
+U+200d 'ေ' c_consonants c_kinzi U+200b + del > U+200b 'ေ' c_consonants@1 U+200b
+c_consonants c_kinzi U+200b + del > U+200b c_consonants@1 U+200b
+
+end context

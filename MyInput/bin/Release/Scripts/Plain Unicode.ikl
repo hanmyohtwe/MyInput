@@ -1,0 +1,23 @@
+﻿#encoding	MM Unicode without Breaks
+
+begin	context
+declare {
+	array	[က,ခ,ဂ,ဃ,င,စ,ဆ,ဇ,ဈ,ဉ,ည,ဋ,ဌ,ဍ,ဎ,ဏ,တ,ထ,ဒ,ဓ,န,ပ,ဖ,ဗ,ဘ,မ,ယ,ရ,လ,ဝ,သ,ဟ,ဠ,အ,ဣ,ဤ,ဥ,ဦ,ဧ,ာ,ိ,ီ,ု,ူ,ေ,ဲ,ံ,့,း,္,၀,၁,၂,၃,၄,၅,၆,၇,၈,၉,၊,။,၌,၍,၏] > keys
+	array	[က..အ]	> consonants
+}
+
+	+ keys > keys@i
+
+	+ 'ေ' > 'ေ'
+	'ေ' + consonants > consonants@i 'ေ' 
+	consonants 'ေ' + 'ႀ' > consonants@1 U+103B 'ေ' 
+	consonants 'ေ' + 'ႅ' > consonants@1 U+103C 'ေ' 
+	consonants 'ေ' + 'ႍ' > consonants@1 U+103D 'ေ' 
+	consonants 'ေ' + '႐' > consonants@1 U+103E 'ေ' 
+	consonants U+103B 'ေ' + 'ႍ' > consonants@1 U+103B U+103D 'ေ' 
+	consonants U+103C 'ေ' + 'ႍ' > consonants@1 U+103C U+103D 'ေ' 
+	consonants U+103B 'ေ' + '႐' > consonants@1 U+103B U+103E 'ေ' 
+	consonants U+103C 'ေ' + '႐' > consonants@1 U+103C U+103E 'ေ' 
+	consonants U+103D 'ေ' + '႐' > consonants@1 U+103D U+103E 'ေ' 
+	'ေ' + 'ႏ' > U+103f 'ေ'
+end context

@@ -1,0 +1,7 @@
+A:\Projects\MyInput\ScriptCompiler\bin\Debug\ScriptCompiler.exe
+A:\Projects\MyInput\ScriptCompiler\bin\Debug\ScriptCompiler.pdb
+A:\Projects\MyInput\ScriptCompiler\obj\Debug\ScriptCompiler.Form1.resources
+A:\Projects\MyInput\ScriptCompiler\obj\Debug\ScriptCompiler.Properties.Resources.resources
+A:\Projects\MyInput\ScriptCompiler\obj\Debug\ScriptCompiler.csproj.GenerateResource.Cache
+A:\Projects\MyInput\ScriptCompiler\obj\Debug\ScriptCompiler.exe
+A:\Projects\MyInput\ScriptCompiler\obj\Debug\ScriptCompiler.pdb

@@ -1,0 +1,369 @@
+﻿#encoding	Unicode
+
+##MyKeyLanguage Prototype
+
+begin	context
+declare {
+	array	[က..အ]	> consonants
+	array	[က,ဃ,ဆ,ဏ,တ,ထ,ဘ,ယ,လ,သ,ဟ,အ] > byeeto
+	array	[ဣ,ဤ,ဥ,ဦ,ဧ,၌,၍,၏,၎,ဩ,ဪ] > thara
+	array	[ဈ,ဋ,ဌ,ဍ] > nosubwa
+	array	[၀..၉] > numbers
+	array	[ႀ,ႅ,ႍ,႐] > subbyees
+	array	[U+103B,U+103C,U+103D,U+103E] > Mesials
+	array	[က..႟] > keys
+	array	[က,ခ,ဂ,ဃ,စ,ဆ,ဇ,ဈ,ဋ,ဌ,ဍ,ဏ,တ,ထ,ဒ,ဓ,န,ပ,ဖ,ဗ,ဘ,မ,လ,ဎ] > medials
+	array	[ၠ,ၡ,ၢ,ၣ,ၨ,ၩ,ၪ,ၫ,ၮ,ၰ,ၲ,ၴ,ၵ,ၷ,ၸ,ၹ,ၺ,ၻ,ၼ,ၽ,ၾ,ၿ,ႌ,ၳ] > virtualmedials
+	array	[ာ,ါ] > AA
+}
+
+##process no attach
+##insert
+	+ consonants > consonants@i U+200B
+	+ thara > thara@i U+200B
+##delete
+	consonants U+200B + del > null
+	thara U+200b + del > null
+##finish noattach
+	+ numbers > numbers@i
+
+
+##implement ( ႏ)
+##insert
+	consonants U+200B + 'ႏ' > consonants@1 U+103F U+200B
+	thara U+200b + 'ႏ' > thara@1 U+103F U+200b
+	U+103c U+200b + 'ႏ' > U+103c U+103F U+200b
+	U+102f U+200b + 'ႏ' > U+102f U+103F U+200b
+	U+102D U+200b + 'ႏ' > U+102D U+103F U+200b
+	U+102C U+200b + 'ႏ' > U+102C U+103F U+200b
+	U+1031  U+200b + 'ႏ' > U+1031 U+103F U+200b
+##delete
+	U+103F U+200B + del > U+200B
+##spell
+	+ 'ႏ' > beep
+## finish
+
+## implement ေ
+##spell
+	'ေ' + 'ေ' > 'ေ' beep
+	'ေ' + subbyees > 'ေ' beep
+	'ႅ'  + 'ေ' > 'ႅ' beep
+	'ေ' + virtualmedials > 'ေ' beep
+	U+103B U+103D 'ေ' U+200B + subbyees > U+103B U+103D 'ေ' U+200B beep
+	U+103C U+103D 'ေ' U+200B + subbyees > U+103C U+103D 'ေ' U+200B beep
+	U+103B U+103E 'ေ' U+200B + subbyees > U+103B U+103E 'ေ' U+200B beep
+	U+103C U+103E 'ေ' U+200B + subbyees > U+103C U+103E 'ေ' U+200B beep
+	U+103D U+103E 'ေ' U+200B + subbyees > U+103D U+103E 'ေ' U+200B beep
+	U+103B 'ေ' U+200B + 'ႀ' > U+103B 'ေ' U+200B beep
+	U+103B 'ေ' U+200B + 'ႅ' > U+103B 'ေ' U+200B beep
+	U+103C 'ေ' U+200B + 'ႀ' > U+103C 'ေ' U+200B beep
+	U+103C 'ေ' U+200B + 'ႅ' > U+103C 'ေ' U+200B beep
+	U+103D 'ေ' U+200B + 'ႍ' > U+103D 'ေ' U+200B beep
+	U+103D 'ေ' U+200B + 'ႅ' > U+103D 'ေ' U+200B beep
+	U+103D 'ေ' U+200B + 'ႀ' > U+103D 'ေ' U+200B beep
+	U+103E 'ေ' U+200B + subbyees > U+103E 'ေ' U+200B beep
+## input
+	+ 'ေ' > 'ေ'
+	'ေ' + consonants > consonants@i 'ေ' U+200B
+	consonants 'ေ' U+200B + 'ႀ' > consonants@1 U+103B 'ေ' U+200B
+	consonants 'ေ' U+200B + 'ႅ' > consonants@1 U+103C 'ေ' U+200B
+	consonants 'ေ' U+200B + 'ႍ' > consonants@1 U+103D 'ေ' U+200B
+	consonants 'ေ' U+200B + '႐' > consonants@1 U+103E 'ေ' U+200B
+	consonants U+103B 'ေ' U+200B + 'ႍ' > consonants@1 U+103B U+103D 'ေ' U+200B
+	consonants U+103C 'ေ' U+200B + 'ႍ' > consonants@1 U+103C U+103D 'ေ' U+200B
+	consonants U+103B 'ေ' U+200B + '႐' > consonants@1 U+103B U+103E 'ေ' U+200B
+	consonants U+103C 'ေ' U+200B + '႐' > consonants@1 U+103C U+103E 'ေ' U+200B
+	consonants U+103D 'ေ' U+200B + '႐' > consonants@1 U+103D U+103E 'ေ' U+200B
+	'ေ' + 'ႏ' > U+103f 'ေ' U+200b
+## delete
+	consonants 'ေ' U+200B + del > 'ေ'
+	U+103f 'ေ' U+200b + del > 'ေ' 
+	consonants U+103B 'ေ' U+200B + del > consonants@1 'ေ' U+200B
+	consonants U+103C 'ေ' U+200B + del > consonants@1 'ေ' U+200B
+	consonants U+103D 'ေ' U+200B + del > consonants@1 'ေ' U+200B
+	consonants U+103E 'ေ' U+200B + del > consonants@1 'ေ' U+200B
+	consonants U+103B U+103D 'ေ' U+200B + del > consonants@1 U+103B 'ေ' U+200B
+	consonants U+103C U+103D 'ေ' U+200B + del > consonants@1 U+103C 'ေ' U+200B
+	consonants U+103B U+103E 'ေ' U+200B + del > consonants@1 U+103B 'ေ' U+200B
+	consonants U+103C U+103E 'ေ' U+200B + del > consonants@1 U+103C 'ေ' U+200B
+	consonants U+103D U+103E 'ေ' U+200B + del > consonants@1 U+103D 'ေ' U+200B
+## spell
+	+ 'ေ' > beep
+	'ေ' + keys > 'ေ' beep
+## finish
+
+
+##implement ( - ႀ  ႅ- )              
+## front spell
+'အ' U+200B + 'ႅ' > 'အ' U+200B beep
+## insert 
+consonants U+200B + 'ႀ' > consonants@1 U+103B U+200B
+consonants U+200B + 'ႅ' > consonants@1 U+103C U+200B
+consonants '်' U+200B + 'ႀ' > consonants@1 '်' U+103B U+200B
+## spell
++ 'ႀ' > beep                                            
++ 'ႅ' > beep
+## delete
+consonants U+103B U+200B + del > consonants@1 U+200B
+consonants U+103C U+200B + del > consonants@1 U+200B
+## finish   
+
+## implement ( - ႍ )
+## insert
+consonants U+200B + 'ႍ' > consonants@1 U+103D U+200B
+consonants U+103B U+200B + 'ႍ' > consonants@1 U+103B U+103D U+200B
+consonants U+103C U+200B + 'ႍ' > consonants@1 U+103C U+103D U+200B
+## delete
+consonants U+103D U+200B + del > consonants@1 U+200B
+consonants U+103B U+103D U+200B + del > consonants@1 U+103B U+200B
+consonants U+103C U+103D U+200B + del > consonants@1 U+103C U+200B
+## spell
++ 'ႍ' > beep
+## finish ( - ႍ)
+
+
+## this is HAHTO
+## implement ( - ႐)
+## insert
+consonants U+200b + '႐' > consonants@1 U+103e U+200b
+consonants U+103b U+200b + '႐' > consonants@1 U+103b U+103e U+200b
+consonants U+103c U+200b + '႐' > consonants@1 U+103c U+103e U+200b
+consonants U+103b U+103d U+200b + '႐' > consonants@1 U+103b U+103d U+103e U+200b
+consonants U+103c U+103d U+200b + '႐' > consonants@1 U+103c U+103d U+103e U+200b
+consonants U+103d U+200b + '႐' > consonants@1 U+103d U+103e U+200b
+
+## delete
+consonants U+103e U+200b + del > consonants@1 U+200b
+consonants U+103b U+103e U+200b + del > consonants@1 U+103b U+200b
+consonants U+103c U+103e U+200b + del > consonants@1 U+103c U+200b
+consonants U+103b U+103d U+103e U+200b + del > consonants@1 U+103b U+103d U+200b
+consonants U+103c U+103d U+103e U+200b + del > consonants@1 U+103c U+103d U+200b
+consonants U+103d U+103e U+200b + del > consonants@1 U+103d U+200b
+
+## spell
++ '႐' > beep
+## finish ( - ႐)       
+
+
+
+## implement ( - ္)
+## insert
+U+200b consonants U+200b + '်' > consonants@1 U+103a U+200b
+U+102b U+200b + '်' > U+102b U+103a U+200b
+U+102c U+200b + '်' > U+102c U+103a U+200b
+## delete
+consonants U+103a U+200b + del > U+200b consonants@1 U+200b
+U+102b U+103a U+200b + del > U+102b U+200b
+U+102c U+103a U+200b + del > U+102c U+200b
+## spell                                           
++ '္' > beep
++ '်' > beep
+## finish ( - ္)
+
+
+## implement ( - ာ)
+##  insert                      
+consonants U+200b + AA > consonants@1 AA@i U+200b
+'ေ' U+200b + AA > 'ေ' AA@i U+200b
+Mesials U+200b + AA > Mesials@1 AA@i U+200b
+U+103F U+200b + AA > U+103F AA@i U+200b
+## delete
+AA U+200b + del > U+200b  
+## spell
++ AA > beep
+## finish ( - ာ)
+
+
+## implement ( - ိ)    
+## insert
+consonants U+200b + 'ိ' > consonants@1 'ိ' U+200b
+U+103F U+200b +  'ိ' > U+103F  'ိ' U+200b
+consonants Mesials U+200b + 'ိ' > consonants@1 Mesials@2 'ိ' U+200b
+consonants Mesials Mesials U+200b + 'ိ' > consonants@1 Mesials@2 Mesials@3  'ိ' U+200b
+## delete
+'ိ' U+200b + del > U+200b
+## spell
++ 'ိ' > beep
+## finish                       
+
+
+## implement ( - ီ)   
+## insert
+consonants U+200b + 'ီ' > consonants@1 'ီ' U+200b
+U+103F U+200b +  'ီ' > U+103F  'ီ' U+200b
+consonants Mesials U+200b + 'ီ' > consonants@1 Mesials@2 'ီ' U+200b
+'ဥ' U+200b + 'ီ' > 'ဦ' U+200b
+## delete                         
+'ဦ' U+200b + del > 'ဥ' U+200b
+'ီ' U+200b + del > U+200b
+## spell
++ 'ီ' > beep
+## finish
+
+
+
+## implement ( - ဲ)
+## insert
+consonants U+200b + 'ဲ' > consonants@1 'ဲ' U+200b
+Mesials U+200b + 'ဲ' > Mesials@1 'ဲ' U+200b
+## delete
+'ဲ' U+200b + del > U+200b
+## spell
++ 'ဲ' > beep
+## finish
+
+## implement ( - ု)
+## insert 
+consonants U+200b + 'ု' > consonants@1 'ု' U+200b
+  'ိ' U+200b + 'ု' > 'ို' U+200b
+U+103b U+200b + 'ု' > U+103b 'ု' U+200b
+U+103c U+200b + 'ု' > U+103c 'ု' U+200b
+U+103e U+200b + 'ု' > U+103e 'ု' U+200b
+  'ံ' U+200b + 'ု' > 'ုံ' U+200b
+U+103F U+200b + 'ု' > U+103F  'ု' U+200b
+## delete
+'ု' U+200b + del > U+200b
+ 'ုံ' U+200b + del > 'ံ' U+200b
+## spell
++ 'ု' > beep
+## finish
+
+## implement ( - ူ)
+## insert
+consonants U+200b + 'ူ' > consonants@1 'ူ' U+200b
+U+103b U+200b + 'ူ' > U+103b 'ူ' U+200b
+U+103c U+200b + 'ူ' > U+103c 'ူ' U+200b
+U+103e U+200b + 'ူ' > U+103e 'ူ' U+200b
+U+103F U+200b + 'ူ' > U+103F  'ူ' U+200b
+'ဲ' U+200b + 'ူ' > 'ဥူ' U+200b
+## delete
+'ူ' U+200b + del > U+200b
+## spell
++ 'ူ' > beep
+## finish
+
+
+
+## implement ( - ံ)
+## insert
+consonants U+200b + 'ံ' > consonants@1 'ံ' U+200b
+Mesials U+200b + 'ံ' > Mesials@1 'ံ' U+200b
+'ိ' U+200b + 'ံ' > 'ိံ' U+200b
+'ဥ' U+200b + 'ံ' > 'ဥံ' U+200b
+U+103F U+200b + 'ံ' > U+103F 'ံ' U+200b
+## delete
+'ံ' U+200b + del > U+200b
+## spell
++ 'ံ' > beep
+## finish
+
+## implement ( - ့)
+## insert
+consonants U+200b + '့' > consonants@1 '့' U+200b
+'ာ' U+200b + '့' > 'ာ့' U+200b
+'ါ' U+200b + '့' > 'ါ့' U+200b
+'ီ' U+200b + '့' > 'ီ့' U+200b
+'ု' U+200b + '့' > 'ု့' U+200b
+'ူ' U+200b + '့' > 'ူ့' U+200b
+'ဲ' U+200b + '့' > 'ဲ့' U+200b
+Mesials 'ေ' U+200b + '့' > Mesials@1 'ေ့' U+200b
+'ေ' U+200b + '့' > 'ေ့' U+200b
+'်' U+200b + '့' > '့်' U+200b
+'ံ' U+200b + '့' > 'ံ့' U+200b
+## delete
+'့' U+200b + del > U+200b
+## spell
++ '့' > beep
+## finish
+
+## implement ( - း)
+## insert
+'ေ' U+200b + 'း' > 'ေး' U+200b
+'ာ' U+200b + 'း' > 'ား' U+200b
+'ါ' U+200b + 'း' > 'ါး' U+200b
+'ီ' U+200b + 'း' > 'ီး' U+200b
+'ူ' U+200b + 'း' > 'ူး' U+200b
+'်' U+200b + 'း' > '်း' U+200b
+'ုံ' U+200b + 'း' > 'ုံး' U+200b
+'ို' U+200b + 'း' > 'ိုး' U+200b
+'ဦ' U+200b + 'း' > 'ဦး' U+200b
+## delete
+'း' U+200b + del > U+200b
+## spell
++ 'း' > beep
+## finish
+
+
+
+## implement sections
+## insert
+U+200b + '။' > '။' U+200b
+U+200b + '၊' > '၊' U+200b   
++ '။' > '။'
++ '၊' > '၊'
+## delete
+'။' U+200b + del > U+200b
+'၊' U+200b + del > U+200b
+## finish
+
+
+## implement stacked forms
+## insert
+U+200b consonants U+200b + virtualmedials > consonants@1 U+1039 medials@i U+200b
+consonants U+200b + virtualmedials > consonants@1 U+1039 medials@i U+200b
+consonants 'ေ' U+200b + virtualmedials > consonants@1 U+1039 medials@i 'ေ' U+200b
+## delete
+consonants consonants U+1039 medials U+200b + del > consonants@1 U+200b consonants@2
+consonants U+1039 medials U+200b + del > consonants@1 U+200b
+consonants U+1039 medials 'ေ' U+200b + del > consonants@1 'ေ' U+200b
+## spell
++ virtualmedials > beep
+## finish
+
+## implement ( ၘ)
+## insert 
+consonants U+200b + 'ၘ' > consonants@1 'ဌ' U+1039 'ဌ' U+200b
+consonants 'ေ' U+200b + 'ၘ' > consonants@1 'ဌ' U+1039 'ဌ' 'ေ' U+200b
+## delete                                                                     
+consonants 'ဌ' U+1039 'ဌ' U+200b + del > consonants@1 U+200b
+consonants 'ဌ' U+1039 'ဌ' 'ေ' U+200b + del > consonants@1 'ေ' U+200b 
+## spell
++ 'ၘ' > beep
+## finish
+
+## implement kinzi ( - ၤ)
+## insert
+consonants U+200b + 'ၤ' > consonants@1 'င်' U+1039
+consonants 'ိ' U+200b + 'ၤ' > consonants@1 'ိ' 'င်' U+1039
+consonants 'ို' U+200b + 'ၤ' > consonants@1 'ို' 'င်' U+1039
+U+103F U+200b + 'ၤ' > U+103F 'င်' U+1039
+consonants  'ု' U+200b + 'ၤ' > consonants@1  'ု' 'င်' U+1039
+U+103F 'ု' U+200b + 'ၤ' > U+103F 'ု' 'င်' U+1039
+'ဣ' U+200b + 'ၤ' > 'ဣ' 'င်' U+1039
+## delete
+'င်' U+1039 + del > null
+## spell
++ 'ၤ' > beep
+## finish
+
+## Specials
+'ကျွန်​' + 'ု' > 'ကျွန်ု​'
+'ကျွန်ု​ပ​' + '်' > 'ကျွန်ုပ်​'
+'လက်​' + 'ႀ' > 'လက်' U+103B U+200b
+'အိ​နြေ​' + 'ၸ' > 'အိ​န္ဒြေ​'
+'ဣ​နြေ​' + 'ၸ' > 'ဣန္ဒြေ​'
+##'လက်' U+103B U+200b + 'ာ' > 'လက်' U+103B 'ာ' U+200b
+
+##delete
+'ကျွန်ုပ်​' + del > 'ကျွန်ု​ပ​'
+'ကျွန်ု​' + del > 'ကျွန်​'
+'လက်ျ​' + del > 'လက်​'
+'လက်' U+103B 'ာ' U+200b + del > 'လက်' U+103B U+200b
+'ဣန္ဒြေ​' + del > 'ဣ​နြေ​'
+'အိ​န္ဒြေ​' + del > 'အိ​နြေ​'
+##end special
+
+## error check
++ keys > beep
+end	context
+

@@ -1,0 +1,154 @@
+﻿#encoding	ZawGyi with intelligent characters
+
+##begin contextual processing
+## format is
+## context + inputting character > result
+## example a + 'b' > 'ba'
+## if there is a in front and user typed b the result will be 'ba'.
+## contextual processing starts with "begin context"
+## declaring arrays
+## declarations are within block declare { }
+## declare an array named key
+## format is array [array item1, array item2, etc] > array name
+## or array [array item1..array item10] > array name
+begin	context
+declare
+{
+	array [က..အ,ႏ] > cons
+	array [ည,်,ၽ,,ွ,ူ] > lx
+	array [U+1000,U+1003,U+1006,U+1010,U+1011,U+1018,U+101C,U+101E,U+100A,U+101A] > biggers
+	array [U+1001,U+1002,U+1004,U+1012,U+1015,U+101D] > moutcha
+	array [ျ,ၾ]	> yayits
+	array [ာ,ိ,ီ,ု,ူ,ဲ,ံ,့,း] > all
+	array [န,ု,ူ,ွ,ႇ,ဳ,ဴ,ြ,်] > moveukm
+	array [ု,ူ,U+1039,ြ,ႊ,ွ] > nashorter
+	array [,ၠ,ၡ,ၢ,ၣ,ၥ,ၦ,ၧ,ၨ,ၩ,ၪ,ၫ,ၬ,ၭ,ၮ,ၯ,ၰ,ၱ,ၲ,ၳ,ၴ,ၵ,ၶ,ၷ,ၸ,ၹ,ၺ,ၻ,ၼ] > stacked
+	array [က,ဃ,ဆ,ဏ,တ,ထ,ဘ,ယ,သ,အ] > longcons
+}
+
+
+
+##detect to replace long U and UU
+lx +	'ု'	>	lx@1  'ဳ'
+lx +	'ူ'	>	lx@1  'ဴ'
+'ညိ' +	'ု'	>	'ညိဳ'
+'ညိ' +	'ူ'	>	'ညိဴ'
+'ညႇ' +	'ု'	>	'ညႇဳ'
+'ညႇ' +	'ူ'	>	'ညႇဴ'
+stacked +	'ု'	>	stacked@1 'ဳ'
+stacked + 'ူ'	>	stacked@1 'ဴ'
+yayits cons + 'ု'	>	yayits@1 cons@2 'ဳ'
+yayits cons + 'ူ'	>	yayits@1 cons@2 'ဴ'
+'ြိ' +	'ု'	>	'ြိဳ'
+'ြိ' +	'ူ'	>	'ြိဴ'
+'ြံ' +	'ု'	>	'ြံဳ'
+'ြံ' +	'ူ'	>	'ြံဴ'
+'်ိ' +	'ု'	>	'်ိဳ'
+'်ံ' +	'ု'	>	'်ံဳ'
+'ၽွိ' +	'ု'	>	'ၽွိဳ'
+'ၽွံ' +	'ု'	>	'ၽွံဳ'
+'ညႇိ' +	'ု'	>	'ညႇိဳ'
+yayits cons all +	'ု'	>	yayits@1 cons@2 all@3 'ဳ'
+
+##detect to reorder and change Big and Small YaYit
+biggers +	'ႅ'	>	'ၾ'  biggers@1
+cons +	'ႅ'	>	'ျ'  cons@1
+
+##detect possible moutcha and change
+yayits moutcha + 'ာ' > yayits@1 moutcha@2 'ာ'
+moutcha + 'ာ'	>	moutcha@1  'ါ'
+moutcha + 'ါ'	>	moutcha@1  'ါ'
+cons + 'ါ'		>	cons@1  'ာ'
+
+## yapin waswe htahto
+'်' +	'ႍ'	>	'ြၽ'
+'ြၽ' +	'႐'	>	'ႊၽ'
+
+## out ka myint positioning
+'ဴ' + '့'	> 'ဴ႕'
+moveukm + '့'	>	moveukm@1 '႔'
+yayits +	 '့'	>	yayits@1 '႔'
+'န' all +	 '့'	>	'န' all@1 '႔'
+'ြံ' +	 '့'	>	'ြံ႔'
+'ွဲ' +	'့'	>	'ွဲ႔'
+'ြဲ' +	'့'	>	'ြဲ႔'
+'ၽ' +	'့'	>	'ၽ႔'
+'ွ' +	'့'	>	'ွ႔'
+'ွ' all +	'့'	>	'ွ' all@1 '႔'
+
+
+##Short Na check
+'န' + 	nashorter >	'ႏ' nashorter@i
+'န'   +	'ၵ'	>	'ႏၲ'
+'န'   +	'ၸ'	>	'ႏၵ'
+'န'   +	'ၹ'	>	'ႏၶ'
+'န' + 	stacked >	'ႏ' stacked@i
+'န' all + 	nashorter >	'ႏ' all@1 nashorter@i
+'န' +	'ႍ'	>	'ႏြ'
+
+## Ra Short
+'ရ' +	'ု'	>	'႐ု'
+'ရံ' +	'ု'	>	'႐ံု'
+'ရွံ' +	'ု'	>	'႐ႈံ'
+'ရိ' +	'ု'	>	'႐ုိ'
+
+'ဏ'	+	'ၲ'	>	'႑'
+'ဏ'	+	'ၱ'	>	'႑'
++ 	'်'	>	U+1039
++	'ႍ'	>	'ြ'
++	'႐'	>	'ွ'
++	'ၗ'	>	'ၚ'
++	'ၨ'	>	'ၥ'
++	'ၩ'	>	'ၦ'
++	'ၩ'	>	'ၧ'
++	'ၪ'	>	'ၨ'
++	'ၫ'	>	'ၩ'
++	'ၬ'	>	'ၪ'
++	'ၭ'	>	'ၫ'
++	'ၮ'	>	'ၬ'
++	'ၰ'	>	'ၭ'
++	'ဍၲ'	>	'ၮ'
++	'ၳၲၳ'	>	'ၯ'
++	'ၴ'	>	'ၰ'
+longcons  +	'ၵ'	>	longcons@1 'ၱ'
+cons    +	'ၵ'	>	cons@1	'ၲ'
+longcons +	'ၷ'	>	longcons@1 'ၳ'
+cons +	'ၷ'	>	cons@1 'ၴ'
++	'ၸ'	>	'ၵ'
++	'ၹ'	>	'ၶ'
++	'ၺ'	>	'ၷ'
++	'ၻ'	>	'ၸ'
++	'ၼ'	>	'ၹ'
++	'ၽ'	>	'ၺ'
++	'ၾ'	>	'ၻ'
++	'ၿ'	>	'ၼ'
++	'ႀ'	>	'်'
++	'ႁ'	>	'ြၽ'
++	'ႃ'	>	'ႊၽ'
++	'ႂ'	>	'ၽွ'
++	'ႄ'	>	'ၾ'
++	'ႅ'	>	'ျ'
++	'ႆ'	>	'ၾ'
++	'ႇ'	>	'ႁ'
++	'ႈ'	>	'ႂ'
++	'ႉ'	>	'ႃ'
++	'ႊ'	>	'ႄ'
++	'ႌ'	>	'ႅ'
++	'ႏ'	>	'ႆ'
++	'႑'	>	'ႇ'
++	'႒'	>	'ႈ'
++	'႐႐ဴ'	>	'ႉ'
++	'ႎ'	>	'ႊ'
++	'ၥ'	>	'ႋ'
++	'ၦ'	>	'ႌ'
++	'ၧ'	>	'ႍ'
++	'ဵ'	>	'ႎ'
++	'ၙ'	>	'ႏ'
++	'ရ'	>	'ရ'
++	'ၘ'	>	'႒'
++	'႕'	>	'႔'
++	'႔'	>	'႕'
++	'ၶ'	>	'႖'
++	'ဋၮ'	>	'႗'
+
+end	context
